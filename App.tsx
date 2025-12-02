@@ -74,14 +74,15 @@ const App: React.FC = () => {
             };
 
             if (err instanceof Error) {
-                if (err.message.includes('Invalid API Key')) {
-                    setError({ title: 'API Error', message: 'There is an issue with the API configuration. Please contact support.' });
-                } else if (err.message.includes('could not convert')) {
+                const lowerCaseMessage = err.message.toLowerCase();
+                if (lowerCaseMessage.includes('api key')) {
+                    setError({ title: 'API Error', message: 'There is an issue with your API key configuration. Please check it and try again.' });
+                } else if (lowerCaseMessage.includes('could not convert')) {
                     setError({ title: 'Conversion Failed', message: 'The model could not process your LaTeX code. Please check it for significant syntax errors.' });
-                } else if (err.message.includes('Failed to communicate') || err.message.toLowerCase().includes('fetch')) {
-                     setError({ title: 'Network Error', message: 'Could not connect to the conversion service. Please check your internet connection.' });
+                } else if (lowerCaseMessage.includes('rpc failed') || lowerCaseMessage.includes('xhr error') || lowerCaseMessage.includes('fetch')) {
+                     setError({ title: 'Network Error', message: 'Could not connect to the conversion service. Please check your internet connection and try again.' });
                 } else {
-                    setError(genericError);
+                    setError({ title: 'Conversion Error', message: err.message });
                 }
             } else {
                  setError(genericError);

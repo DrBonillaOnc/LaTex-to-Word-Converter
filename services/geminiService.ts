@@ -15,7 +15,7 @@ export interface ConversionOptions {
 }
 
 export const convertLatexToHtml = async (latexCode: string, options: ConversionOptions): Promise<string> => {
-    const model = 'gemini-3-pro-preview';
+    const model = 'gemini-2.5-flash';
 
     const figureInstruction = options.noImagePlaceholders
         ? `3.  **Figures:** The user has opted out of image placeholders. Completely ignore any \`\\includegraphics\` commands.`
@@ -73,9 +73,11 @@ ${latexCode}
         }
     } catch (error) {
         console.error("Error calling Gemini API:", error);
-        if (error instanceof Error && error.message.includes('API key')) {
-             throw new Error("Invalid API Key. Please check your configuration.");
+        if (error instanceof Error) {
+            // Propagate the original error message for better debugging in the UI.
+            throw new Error(error.message);
         }
-        throw new Error("Failed to communicate with the Gemini API.");
+        // Fallback for non-standard errors.
+        throw new Error("An unknown error occurred while communicating with the Gemini API.");
     }
 };
