@@ -1,0 +1,5 @@
+{
+  "name": "Gemini LaTeX to Word Converter",
+  "description": "A professional-grade LaTeX to Word converter powered by Gemini. Accurately transforms academic papers, including complex tables and figures, into editable .docx files.",
+  "requestFramePermissions": []
+}
